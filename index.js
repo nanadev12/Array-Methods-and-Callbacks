@@ -24,10 +24,13 @@ Use getFinals to do the following:
 hint - you should be looking at the stage key inside of the objects
 */
 
-function getFinals(/* code here */) {
-   /* code here */
+function getFinals(array) {
+   const result = array.filter((match) => {
+       return match.Stage === 'Final';
+   });
+   return result;
 }
-
+console.log(getFinals(fifaData))
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 3: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -36,11 +39,11 @@ Use the higher-order function called getYears to do the following:
 2. Receive a callback function getFinals from task 2 
 3. Return an array called years containing all of the years in the getFinals data set*/
 
-function getYears(/* code here */) {
-    /* code here */
+function getYears(array,getFinals) {
+    return getFinals(array).map(function(item){
+        return item.Year
+    });
 }
-
-
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 4: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
 Use the higher-order function getWinners to do the following:  
@@ -49,8 +52,9 @@ Use the higher-order function getWinners to do the following:
 3. Determines the winner (home or away) of each `finals` game. 
 4. Returns the names of all winning countries in an array called `winners` */ 
 
-function getWinners(/* code here */) {
-    /* code here */
+function getWinners(array,getFinals) {
+    return getFinals(array).map(item => item['Home Team Goals'] > item['Away Team Goals'] ? item['Home Team Name'] : item['Away Team Name']
+    );   
 }
 
 
@@ -66,8 +70,14 @@ Use the higher-order function getWinnersByYear to do the following:
 hint: the strings returned need to exactly match the string in step 4.
  */
 
-function getWinnersByYear(/* code here */) {
-    /* code here */
+function getWinnersByYear(array,getFinals,getYears,getWinners) {
+    const finalYears = getYears(array,getFinals)
+    const finalWinners = getWinners(array,getFinals)
+    const finalChamp = finalYears.map(function(year,index){
+        return `In ${year}, ${finalWinners[index]} won the world cup!`
+    });
+     return finalChamp;
+    
 }
 
 
@@ -82,8 +92,11 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(data) {
+    const averageHomeGoals = data.reduce(function(acc, item){
+        return acc + item['Home Team Goals'] + item['Away Team Goals'];
+    }, 0)
+    return(averageHomeGoals / data.length).toFixed(2);
 }
 
 
